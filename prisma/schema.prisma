@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id                  String       @id @default(uuid())
+  name                String
+  email               String       @unique
+  password            String
+  admin               Boolean      @default(false)
+  created_at          DateTime     @default(now())
+  updated_at          DateTime     @default(now())
+  senderCompliments   Compliment[] @relation("SenderCompliments")
+  receiverCompliments Compliment[] @relation("ReceiverCompliments")
+
+  @@map("users")
+}
+
+model Tag {
+  id          String       @id @default(uuid())
+  name        String       @unique
+  created_at  DateTime     @default(now())
+  updated_at  DateTime     @default(now())
+  compliments Compliment[]
+
+  @@map("tags")
+}
+
+model Compliment {
+  id               String   @id @default(uuid())
+  message          String
+  tag_id           String
+  user_sender_id   String
+  user_receiver_id String
+  created_at       DateTime @default(now())
+  updated_at       DateTime @default(now())
+  tag              Tag      @relation(fields: [tag_id], references: [id])
+  userSender       User     @relation("SenderCompliments", fields: [user_sender_id], references: [id])
+  userReceiver     User     @relation("ReceiverCompliments", fields: [user_receiver_id], references: [id])
+
+  @@map("compliment")
+}
