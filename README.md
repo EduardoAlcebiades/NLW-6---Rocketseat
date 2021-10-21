@@ -25,7 +25,7 @@ $ yarn prisma migrate dev
 ```bash
 APP_PORT= (Porta para rodar o servidor)
 
-APP_KEY = (Hash que será usado na criptografia de autenticação)
+APP_KEY= (Hash que será usado na criptografia de autenticação)
 ```
 
 ## Iniciando o servidor
